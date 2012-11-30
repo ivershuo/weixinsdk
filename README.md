@@ -1,6 +1,6 @@
 ### 微信公众平台自动回复SDK
 
-配置好token去http://mp.weixin.qq.com/填上
+配置好token去http://mp.weixin.qq.com/ 填上
 
 new WeixinMP会自动处理授权验证过程
 
