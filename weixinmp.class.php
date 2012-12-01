@@ -14,9 +14,13 @@ class WeixinMP {
     const ERR_UNKNOW_TYPE  = 4205;
 
 
-    public function __construct(){
+    public function __construct($token=''){
         /*自动处理验证逻辑*/
-        $valid = $this->valid();
+        $token = !empty($token) ? $token : (defined(WX_TOKEN) ? WX_TOKEN : '');
+        if(empty($token)){
+            return false;
+        }
+        $valid = $this->valid($token);
         if(!$valid){
             exit;
         }
@@ -161,7 +165,7 @@ class WeixinMP {
 
     /**
      * [其他类型消息处理]
-     * 可以直接调用doTest方法，默认会调用rules目录下的text.php脚本来处理
+     * 可以直接调用doTest方法，默认会调用rules目录下的test.php脚本来处理
      */
     public function __call($name, $argv){
         if(preg_match('/^do[A-Z]/', $name)){
@@ -171,14 +175,14 @@ class WeixinMP {
     }
 
     /*接口验证*/
-    public function valid(){
+    public function valid($token){
         /*获取get参数*/
         $queryFilter = array('signature', 'timestamp', 'nonce', 'echostr');
         foreach ($queryFilter as $key) {
             $$key = isset($_GET[$key]) ? htmlspecialchars(urldecode($_GET[$key])) : '';
         }
 
-        $qarr = array(WX_TOKEN, $timestamp, $nonce);
+        $qarr = array($token, $timestamp, $nonce);
         sort($qarr);
         $sha1Querys = sha1(implode($qarr));
 
