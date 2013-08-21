@@ -16,7 +16,7 @@ class WeixinMP {
 
     public function __construct($token=''){
         /*自动处理验证逻辑*/
-        $token = !empty($token) ? $token : (defined(WX_TOKEN) ? WX_TOKEN : '');
+        $token = !empty($token) ? $token : (defined('WX_TOKEN') ? WX_TOKEN : '');
         if(empty($token)){
             return false;
         }
@@ -147,7 +147,7 @@ class WeixinMP {
         if(!(string)$type){
             throw new Exception("type empty", self::ERR_TYPE_ENPTY);
         } else {
-            if($type == 'text' && $postObj->Content == 'Hello2BizUser'){
+            if($type == 'event' && $postObj->Event == 'subscribe'){
                 $type = 'welcome';
             }
             $funcName = 'do' . ucfirst($type);
